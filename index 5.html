@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🇯🇵 榮來去日本 🇯🇵｜日本關西 7 天 6 夜自由行</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+<style>
+  :root {
+    --cream-bg: #FFFBF7;
+    --cream-card: #FFFFFF;
+    --milk-tea: #EEDCC9;
+    --milk-tea-light: #F7EFE7;
+    --soft-pink: #FCE4EC;
+    --pink-accent: #F48FB1;
+    --coffee-light: #A68268;
+    --coffee-dark: #5C4332;
+    --coffee-text: #4A3525;
+    --kitty-pink: #FF85B3;
+    --kitty-pink-light: #FFF0F5;
+    --kitty-red: #E60033;
+    --kitty-border: #FFB6C1;
+    --shadow-soft: 0 6px 20px rgba(92, 67, 50, 0.07);
+    --radius-lg: 22px;
+    --radius-md: 15px;
+    --radius-sm: 10px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Quicksand', 'Noto Sans TC', sans-serif;
+    background-color: var(--cream-bg);
+    color: var(--coffee-text);
+    line-height: 1.6;
+  }
+
+  body {
+    background-image: radial-gradient(var(--milk-tea) 1px, transparent 1px);
+    background-size: 24px 24px;
+    padding-bottom: 60px;
+  }
+
+  /* 導覽列 */
+  header.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255, 251, 247, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 2px dashed var(--milk-tea);
+    padding: 10px 16px;
+    box-shadow: 0 2px 12px rgba(92, 67, 50, 0.05);
+  }
+
+  .nav-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .nav-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav-brand {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--coffee-dark);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--coffee-dark);
+    background: var(--milk-tea-light);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1.5px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .nav-links a:hover, .nav-links a:focus {
+    background: var(--soft-pink);
+    border-color: var(--pink-accent);
+    color: var(--coffee-dark);
+  }
+
+  /* 主容器 */
+  main {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 20px 16px;
+  }
+
+  section {
+    margin-bottom: 48px;
+    scroll-margin-top: 95px;
+  }
+
+  /* 標題樣式 - 蒙奇奇溫柔風格 */
+  .section-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .section-badge {
+    display: inline-block;
+    background: var(--soft-pink);
+    color: var(--coffee-dark);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+    border: 1.5px dashed var(--pink-accent);
+  }
+
+  .section-title {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--coffee-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .section-divider {
+    width: 80px;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, var(--coffee-light) 0, var(--coffee-light) 8px, transparent 8px, transparent 14px);
+    margin: 10px auto 0;
+    border-radius: 2px;
+  }
+
+  /* 首頁封面 - 蒙奇奇風格 */
+  .hero-card {
+    background: linear-gradient(135deg, #FFFDFB 0%, #FDF2F5 55%, #F6EAE0 100%);
+    border: 2.5px solid var(--milk-tea);
+    border-radius: 28px;
+    padding: 36px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .hero-deco-top {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: var(--pink-accent);
+  }
+
+  .hero-illustration {
+    max-width: 340px;
+    margin: 0 auto 14px;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--coffee-dark);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .hero-subtitle {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--coffee-light);
+    margin-bottom: 4px;
+  }
+
+  .hero-date {
+    display: inline-block;
+    background: var(--coffee-dark);
+    color: #FFFBF7;
+    padding: 6px 20px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 10px 0 24px;
+    letter-spacing: 1px;
+  }
+
+  .info-pills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  .info-pill {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px dashed var(--coffee-light);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    text-align: center;
+  }
+
+  .info-pill-label {
+    font-size: 0.8rem;
+    color: var(--coffee-light);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .info-pill-val {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--coffee-dark);
+  }
+
+  /* 通用卡片 */
+  .card {
+    background: var(--cream-card);
+    border: 2px solid var(--milk-tea);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* 航班時間軸 */
+  .flight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .flight-card {
+    background: var(--cream-card);
+    border: 2px solid var(--milk-tea);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+  }
+
+  .flight-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--soft-pink);
+    color: var(--coffee-dark);
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 14px;
+  }
+
+  .flight-tag.return {
+    background: var(--milk-tea);
+  }
+
+  .flight-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px dashed var(--milk-tea);
+    font-weight: 700;
+    color: var(--coffee-dark);
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 26px;
+    margin-bottom: 16px;
+  }
+
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    background: repeating-linear-gradient(180deg, var(--pink-accent) 0, var(--pink-accent) 6px, transparent 6px, transparent 10px);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 18px;
+  }
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -25px;
+    top: 5px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--pink-accent);
+    border: 3px solid #FFF;
+    box-shadow: 0 0 0 2px var(--pink-accent);
+  }
+
+  .timeline-dot.end {
+    background: var(--coffee-light);
+    box-shadow: 0 0 0 2px var(--coffee-light);
+  }
+
+  .timeline-time {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--coffee-dark);
+  }
+
+  .timeline-place {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--coffee-light);
+  }
+
+  .baggage-box {
+    background: var(--milk-tea-light);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--coffee-dark);
+  }
+
+  /* 住宿資訊 */
+  .hotel-box {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 22px;
+  }
+  @media (max-width: 768px) {
+    .hotel-box {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .hotel-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--coffee-dark);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hotel-alert {
+    background: var(--soft-pink);
+    border-left: 4px solid var(--pink-accent);
+    padding: 12px 14px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin: 14px 0;
+    font-size: 0.92rem;
+  }
+
+  .hotel-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  @media (max-width: 520px) {
+    .hotel-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .hotel-list li {
+    background: var(--milk-tea-light);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  /* =========================================
+     HELLO KITTY 風格獨立地圖區塊
+     ========================================= */
+  .kitty-map-wrapper {
+    background: linear-gradient(180deg, #FFF5F8 0%, #FFEBF2 100%);
+    border: 3px solid var(--kitty-pink);
+    border-radius: 28px;
+    padding: 22px 18px;
+    box-shadow: 0 8px 25px rgba(255, 133, 179, 0.2);
+    position: relative;
+  }
+
+  .kitty-header {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .kitty-bow-svg {
+    width: 58px;
+    height: 36px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .kitty-title {
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #D81B60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .kitty-subtitle {
+    font-size: 0.9rem;
+    color: #AD1457;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .kitty-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+    background: #FFFFFF;
+    padding: 14px;
+    border-radius: 18px;
+    border: 2px solid var(--kitty-border);
+  }
+
+  .kitty-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kitty-row-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #C2185B;
+    margin-right: 4px;
+  }
+
+  .kitty-btn {
+    background: #FFF0F5;
+    border: 1.5px solid var(--kitty-pink);
+    color: #C2185B;
+    padding: 6px 13px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .kitty-btn:hover {
+    background: #FFD6E5;
+  }
+
+  .kitty-btn.active {
+    background: var(--kitty-red);
+    border-color: var(--kitty-red);
+    color: #FFFFFF;
+    box-shadow: 0 3px 10px rgba(230, 0, 51, 0.25);
+  }
+
+  .region-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #880E4F;
+  }
+
+  .legend-dot {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+
+  #kansai-map {
+    width: 100%;
+    height: 520px;
+    border-radius: 20px;
+    border: 3px solid #FFFFFF;
+    box-shadow: 0 4px 15px rgba(216, 27, 96, 0.15);
+    z-index: 1;
+    background: #FFF8FA;
+  }
+  #kansai-map .leaflet-tile-pane {
+    filter: saturate(0.85) brightness(1.04) hue-rotate(-6deg);
+  }
+  @media (max-width: 600px) {
+    #kansai-map {
+      height: 430px;
+    }
+  }
+
+  /* Kitty 地圖自訂標記與彈窗 */
+  .kitty-pin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 3px solid var(--kitty-red);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    position: relative;
+  }
+
+  .kitty-pin::after {
+    content: "🎀";
+    position: absolute;
+    top: -10px;
+    right: -6px;
+    font-size: 13px;
+  }
+
+  .kitty-pin.cat-hotel { border-color: #E60033; background: #FFE4EC; }
+  .kitty-pin.cat-shrine { border-color: #FF5252; }
+  .kitty-pin.cat-spot { border-color: #FF80AB; }
+  .kitty-pin.cat-shopping { border-color: #EC407A; }
+  .kitty-pin.cat-store { border-color: #AB47BC; }
+  .kitty-pin.cat-food { border-color: #FFA726; }
+
+  .leaflet-popup-content-wrapper {
+    border-radius: 18px !important;
+    border: 2px solid var(--kitty-pink) !important;
+    background: #FFFBFD !important;
+    box-shadow: 0 6px 18px rgba(230, 0, 51, 0.15) !important;
+  }
+
+  .kitty-popup {
+    font-family: 'Quicksand', 'Noto Sans TC', sans-serif;
+    min-width: 210px;
+    color: #4A3525;
+  }
+
+  .kitty-popup-badges {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+
+  .kitty-popup-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: #FFE4EC;
+    color: #C2185B;
+  }
+
+  .kitty-popup-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #880E4F;
+    margin-bottom: 4px;
+  }
+
+  .kitty-popup-addr {
+    font-size: 0.82rem;
+    color: #6D4C41;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .kitty-popup-btn {
+    display: block;
+    text-align: center;
+    background: var(--kitty-red);
+    color: #FFFFFF !important;
+    text-decoration: none;
+    padding: 7px 12px;
+    border-radius: 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+    background-color: rgba(255, 133, 179, 0.45) !important;
+  }
+  .marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+    background-color: #E60033 !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-family: 'Quicksand', sans-serif !important;
+  }
+
+  /* 搜尋與篩選列 */
+  .search-filter-bar {
+    background: var(--cream-card);
+    border: 2px solid var(--milk-tea);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .search-input-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 11px 16px 11px 40px;
+    border: 2px solid var(--milk-tea);
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: var(--cream-bg);
+    color: var(--coffee-dark);
+    outline: none;
+  }
+
+  .search-input:focus {
+    border-color: var(--pink-accent);
+    background: #FFFFFF;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+  }
+
+  .filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-tab {
+    background: var(--milk-tea-light);
+    border: 1.5px solid var(--milk-tea);
+    color: var(--coffee-dark);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .filter-tab.active, .filter-tab:hover {
+    background: var(--coffee-dark);
+    color: #FFFBF7;
+    border-color: var(--coffee-dark);
+  }
+
+  /* 地點卡片網格 */
+  .places-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 16px;
+  }
+
+  .place-card {
+    background: var(--cream-card);
+    border: 2px solid var(--milk-tea);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.15s;
+  }
+
+  .place-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--pink-accent);
+  }
+
+  .place-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .badge-area {
+    background: var(--milk-tea);
+    color: var(--coffee-dark);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+
+  .badge-type {
+    background: var(--soft-pink);
+    color: var(--coffee-dark);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+
+  .badge-reserve {
+    background: #FFE0B2;
+    color: #E65100;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+
+  .badge-note {
+    background: #E8F5E9;
+    color: #2E7D32;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+
+  .place-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--coffee-dark);
+    margin-bottom: 6px;
+    line-height: 1.35;
+  }
+
+  .place-detail {
+    font-size: 0.86rem;
+    color: var(--coffee-light);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .place-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .btn-map-link {
+    flex: 1;
+    text-align: center;
+    background: var(--milk-tea-light);
+    color: var(--coffee-dark);
+    border: 1.5px solid var(--coffee-light);
+    text-decoration: none;
+    padding: 7px 10px;
+    border-radius: 14px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+
+  .btn-map-link:hover {
+    background: var(--coffee-dark);
+    color: #FFFFFF;
+  }
+
+  .btn-focus-map {
+    background: var(--soft-pink);
+    color: var(--coffee-dark);
+    border: 1.5px solid var(--pink-accent);
+    padding: 7px 11px;
+    border-radius: 14px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .btn-focus-map:hover {
+    background: var(--pink-accent);
+    color: #FFFFFF;
+  }
+
+  /* 出國必備清單 */
+  .checklist-progress-box {
+    background: var(--cream-card);
+    border: 2px solid var(--milk-tea);
+    border-radius: var(--radius-lg);
+    padding: 18px 22px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: var(--coffee-dark);
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 16px;
+    background: var(--milk-tea-light);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1.5px solid var(--milk-tea);
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--pink-accent), var(--coffee-light));
+    border-radius: 12px;
+    transition: width 0.3s ease;
+  }
+
+  .checklist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+
+  .checklist-cat {
+    background: var(--cream-card);
+    border: 2px solid var(--milk-tea);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .checklist-cat h3 {
+    font-size: 1.05rem;
+    color: var(--coffee-dark);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px dashed var(--milk-tea);
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 6px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 0.94rem;
+    user-select: none;
+  }
+
+  .check-item:hover {
+    background: var(--milk-tea-light);
+  }
+
+  .check-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--pink-accent);
+    cursor: pointer;
+  }
+
+  .check-item.checked span {
+    text-decoration: line-through;
+    color: #A8988C;
+  }
+
+  /* VJW 入境步驟 */
+  .vjw-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+
+  .vjw-step {
+    background: var(--milk-tea-light);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .vjw-num {
+    background: var(--pink-accent);
+    color: #FFFFFF;
+    font-weight: 700;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.9rem;
+  }
+
+  /* 交通與 APP 卡片 */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .app-card {
+    background: var(--cream-card);
+    border: 2px solid var(--milk-tea);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .app-title {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--coffee-dark);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 24px 16px;
+    color: var(--coffee-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+</style>
+</head>
+<body>
+
+  <!-- 導覽列 -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-top">
+        <a href="#home" class="nav-brand">🇯🇵 榮來去日本 🇯🇵</a>
+        <span style="font-size:0.82rem; color:var(--coffee-light); font-weight:700;">2027/02/27 - 03/05</span>
+      </div>
+      <nav class="nav-links" aria-label="主要導覽選單">
+        <a href="#home">🏠 首頁</a>
+        <a href="#flights">✈️ 航班資訊</a>
+        <a href="#hotel">🏨 住宿資訊</a>
+        <a href="#kitty-map-section">🎀 行程地圖</a>
+        <a href="#shrines">⛩️ 神社與寺廟</a>
+        <a href="#spots">🎡 景點</a>
+        <a href="#shopping">🛍️ 逛街購物</a>
+        <a href="#stores">🧸 商店</a>
+        <a href="#food">🍜 美食餐廳</a>
+        <a href="#checklist">🧳 出國必備清單</a>
+        <a href="#apps">📱 實用 APP</a>
+        <a href="#transport">🚃 交通資訊</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. 首頁 -->
+    <section id="home">
+      <div class="hero-card">
+        <div class="hero-deco-top">🌸 ✦ ♡ ✦ 🌸</div>
+        
+        <!-- 蒙奇奇溫柔手繪風格日本旅遊封面插畫 (無猴子符號，純可愛日系手繪元素) -->
+        <div class="hero-illustration">
+          <svg viewBox="0 0 360 150" xmlns="http://www.w3.org/2000/svg" aria-label="日本關西旅行可愛插畫">
+            <!-- 雲朵與櫻花花瓣 -->
+            <ellipse cx="65" cy="36" rx="26" ry="11" fill="#FFFFFF" stroke="#EEDCC9" stroke-width="2"/>
+            <ellipse cx="295" cy="32" rx="28" ry="12" fill="#FFFFFF" stroke="#EEDCC9" stroke-width="2"/>
+            <circle cx="42" cy="65" r="5" fill="#FAD2E1"/>
+            <circle cx="318" cy="68" r="5" fill="#FAD2E1"/>
+            <circle cx="110" cy="24" r="4" fill="#F48FB1"/>
+            <circle cx="250" cy="22" r="4" fill="#F48FB1"/>
+
+            <!-- 富士山 -->
+            <path d="M115 128 L175 45 Q180 39 185 45 L245 128 Z" fill="#A68268" stroke="#5C4332" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M156 71 L175 45 Q180 39 185 45 L204 71 Q194 78 187 71 Q180 79 173 71 Q165 78 156 71 Z" fill="#FFFBF7" stroke="#5C4332" stroke-width="2" stroke-linejoin="round"/>
+
+            <!-- 鳥居 -->
+            <g transform="translate(46, 74)">
+              <rect x="10" y="14" width="6" height="40" rx="2" fill="#E57373" stroke="#5C4332" stroke-width="2"/>
+              <rect x="36" y="14" width="6" height="40" rx="2" fill="#E57373" stroke="#5C4332" stroke-width="2"/>
+              <path d="M2 10 Q26 16 50 10 L48 16 Q26 21 4 16 Z" fill="#E57373" stroke="#5C4332" stroke-width="2"/>
+              <rect x="6" y="23" width="40" height="5" rx="2" fill="#E57373" stroke="#5C4332" stroke-width="2"/>
+              <rect x="23" y="16" width="6" height="8" fill="#FFFBF7" stroke="#5C4332" stroke-width="1.5"/>
+            </g>
+
+            <!-- 可愛復古旅行箱 -->
+            <g transform="translate(248, 76)">
+              <rect x="15" y="2" width="18" height="12" rx="4" fill="none" stroke="#5C4332" stroke-width="2.5"/>
+              <rect x="4" y="12" width="40" height="34" rx="8" fill="#F8BBD0" stroke="#5C4332" stroke-width="2.5"/>
+              <line x1="14" y1="12" x2="14" y2="46" stroke="#5C4332" stroke-width="2"/>
+              <line x1="34" y1="12" x2="34" y2="46" stroke="#5C4332" stroke-width="2"/>
+              <circle cx="11" cy="49" r="3" fill="#5C4332"/>
+              <circle cx="37" cy="49" r="3" fill="#5C4332"/>
+              <path d="M24 25 L26 29 L30 29 L27 32 L28 36 L24 33 L20 36 L21 32 L18 29 L22 29 Z" fill="#FFFBF7"/>
+            </g>
+
+            <!-- 地面線條 -->
+            <line x1="25" y1="128" x2="335" y2="128" stroke="#5C4332" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <h1 class="hero-title">🇯🇵 榮來去日本 🇯🇵</h1>
+        <p class="hero-subtitle">日本關西 7 天 6 夜自由行</p>
+        <div class="hero-date">2027.02.27 — 2027.03.05</div>
+
+        <div class="info-pills">
+          <div class="info-pill">
+            <div class="info-pill-label">🗓️ 旅遊天數</div>
+            <div class="info-pill-val">7 天 6 夜</div>
+          </div>
+          <div class="info-pill">
+            <div class="info-pill-label">🛫 出發日期</div>
+            <div class="info-pill-val">2027/02/27</div>
+          </div>
+          <div class="info-pill">
+            <div class="info-pill-label">🛬 回程日期</div>
+            <div class="info-pill-val">2027/03/05</div>
+          </div>
+          <div class="info-pill">
+            <div class="info-pill-label">🏨 住宿飯店</div>
+            <div class="info-pill-val">STAY IN YEBISU</div>
+          </div>
+          <div class="info-pill">
+            <div class="info-pill-label">📍 旅遊地區</div>
+            <div class="info-pill-val">大阪、京都、奈良、天橋立</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 航班資訊 -->
+    <section id="flights">
+      <div class="section-header">
+        <span class="section-badge">EVA AIR 長榮航空</span>
+        <h2 class="section-title">✈️ 航班資訊</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="flight-grid">
+        <!-- 去程 -->
+        <div class="flight-card">
+          <div class="flight-tag">🛫 去程航班｜2027/02/27</div>
+          <div class="flight-meta">
+            <span>長榮航空 BR178</span>
+            <span>TPE ➔ KIX</span>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">06:30</div>
+              <div class="timeline-place">TPE 台北桃園國際機場 T2</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot end"></div>
+              <div class="timeline-time">09:55</div>
+              <div class="timeline-place">KIX 大阪關西國際機場 T1</div>
+            </div>
+          </div>
+          <div class="baggage-box">
+            <span>🧳 托運行李：23 公斤</span>
+            <span>🎒 手提行李：7 公斤</span>
+          </div>
+        </div>
+
+        <!-- 回程 -->
+        <div class="flight-card">
+          <div class="flight-tag return">🛬 回程航班｜2027/03/05</div>
+          <div class="flight-meta">
+            <span>長榮航空 BR129</span>
+            <span>KIX ➔ TPE</span>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-time">18:10</div>
+              <div class="timeline-place">KIX 大阪關西國際機場 T1</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot end"></div>
+              <div class="timeline-time">20:25</div>
+              <div class="timeline-place">TPE 台北桃園國際機場 T2</div>
+            </div>
+          </div>
+          <div class="baggage-box">
+            <span>🧳 托運行李：23 公斤</span>
+            <span>🎒 手提行李：7 公斤</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 住宿資訊 -->
+    <section id="hotel">
+      <div class="section-header">
+        <span class="section-badge">大阪浪速區住宿基地</span>
+        <h2 class="section-title">🏨 住宿資訊</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="card">
+        <div class="hotel-box">
+          <div>
+            <div class="hotel-name">🏡 STAY IN YEBISU</div>
+            <p style="font-size:0.95rem; margin-bottom:10px;">
+              <strong>📍 地址：</strong>〒556-0003 大阪府大阪市浪速区恵美須西２丁目１１−6
+            </p>
+            <p style="font-size:0.95rem; margin-bottom:10px;">
+              <strong>⏰ 入住／退房：</strong>入住時間 17:00～24:00 ｜ 退房時間 11:00 前
+            </p>
+            <p style="font-size:0.95rem;">
+              <strong>📱 入住方式：</strong>採自助 Check-in，透過平板登記護照與個人資訊，完成後取得房間密碼。
+            </p>
+            <div class="hotel-alert">
+              <strong>⚠️ 重要提醒：</strong>大門密碼與房間密碼不同，訂房後要留意飯店傳送的入住資訊。
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+              <a class="btn-map-link" href="https://www.google.com/maps/search/?api=1&query=STAY+IN+YEBISU+〒556-0003+大阪府大阪市浪速区恵美須西２丁目１１−6" target="_blank" rel="noopener">🗺️ 開啟 Google Maps</a>
+              <button class="btn-focus-map" onclick="focusOnPlace('hotel-yebisu')">🎀 在 Kitty 地圖查看</button>
+            </div>
+          </div>
+
+          <div>
+            <strong style="color:var(--coffee-dark); font-size:1rem;">🚉 交通與週邊機能</strong>
+            <ul class="hotel-list">
+              <li>🚶 步行 10 分鐘內到地鐵與火車站</li>
+              <li>🚃 日本橋：1 站</li>
+              <li>🛍️ 心齋橋：2 站</li>
+              <li>🏙️ 梅田：5 站</li>
+              <li>⛩️ 京都：約 1 小時</li>
+              <li>🏪 周圍有 Lawson、FamilyMart、24 小時家庭超市</li>
+              <li>🐧 步行約 7 分鐘到大型唐吉軻德</li>
+              <li>🧳 Daikoku Locker 可寄放行李（步行約 10 分鐘）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 獨立 Kitty 風格關西旅遊地圖 -->
+    <section id="kitty-map-section">
+      <div class="kitty-map-wrapper">
+        <div class="kitty-header">
+          <h2 class="kitty-title">
+            <!-- Kitty 風格紅色蝴蝶結 SVG -->
+            <svg class="kitty-bow-svg" viewBox="0 0 100 62" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M46 31 C30 8, 6 10, 10 31 C6 52, 30 54, 46 31 Z" fill="#E60033" stroke="#880E4F" stroke-width="3"/>
+              <path d="M54 31 C70 8, 94 10, 90 31 C94 52, 70 54, 54 31 Z" fill="#E60033" stroke="#880E4F" stroke-width="3"/>
+              <ellipse cx="32" cy="31" rx="6" ry="5" fill="#FF5252"/>
+              <ellipse cx="68" cy="31" rx="6" ry="5" fill="#FF5252"/>
+              <circle cx="50" cy="31" r="11" fill="#E60033" stroke="#880E4F" stroke-width="3"/>
+            </svg>
+            Kitty 風格關西旅遊地圖
+            <svg class="kitty-bow-svg" viewBox="0 0 100 62" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M46 31 C30 8, 6 10, 10 31 C6 52, 30 54, 46 31 Z" fill="#E60033" stroke="#880E4F" stroke-width="3"/>
+              <path d="M54 31 C70 8, 94 10, 90 31 C94 52, 70 54, 54 31 Z" fill="#E60033" stroke="#880E4F" stroke-width="3"/>
+              <ellipse cx="32" cy="31" rx="6" ry="5" fill="#FF5252"/>
+              <ellipse cx="68" cy="31" rx="6" ry="5" fill="#FF5252"/>
+              <circle cx="50" cy="31" r="11" fill="#E60033" stroke="#880E4F" stroke-width="3"/>
+            </svg>
+          </h2>
+          <p class="kitty-subtitle">點擊蝴蝶結標記查看地點資訊與 Google Maps 導航（收錄全部 48 個地點與住宿）</p>
+        </div>
+
+        <div class="kitty-controls">
+          <!-- 區域視角快速切換 -->
+          <div class="kitty-row">
+            <span class="kitty-row-label">🗺️ 區域切換：</span>
+            <button class="kitty-btn active" data-view="all" onclick="setMapView('all', this)">關西全覽（含天橋立/奈良）</button>
+            <button class="kitty-btn" data-view="osaka" onclick="setMapView('osaka', this)">大阪周邊地圖</button>
+            <button class="kitty-btn" data-view="kyoto" onclick="setMapView('kyoto', this)">京都周邊地圖</button>
+            <button class="kitty-btn" data-view="nara" onclick="setMapView('nara', this)">奈良＆生駒山</button>
+            <button class="kitty-btn" data-view="amanohashidate" onclick="setMapView('amanohashidate', this)">天橋立</button>
+          </div>
+
+          <!-- 分類篩選 -->
+          <div class="kitty-row">
+            <span class="kitty-row-label">🎀 分類篩選：</span>
+            <button class="kitty-btn active" data-cat="all" onclick="filterMapCategory('all', this)">全部顯示</button>
+            <button class="kitty-btn" data-cat="hotel" onclick="filterMapCategory('hotel', this)">🏨 住宿</button>
+            <button class="kitty-btn" data-cat="shrine" onclick="filterMapCategory('shrine', this)">⛩️ 神社寺廟</button>
+            <button class="kitty-btn" data-cat="spot" onclick="filterMapCategory('spot', this)">🎡 景點</button>
+            <button class="kitty-btn" data-cat="shopping" onclick="filterMapCategory('shopping', this)">🛍️ 逛街購物</button>
+            <button class="kitty-btn" data-cat="store" onclick="filterMapCategory('store', this)">🧸 商店</button>
+            <button class="kitty-btn" data-cat="food" onclick="filterMapCategory('food', this)">🍜 美食餐廳</button>
+          </div>
+
+          <!-- 區域顏色圖例 -->
+          <div class="region-legend">
+            <span><i class="legend-dot" style="background:#FF85B3;"></i>大阪區域</span>
+            <span><i class="legend-dot" style="background:#BA68C8;"></i>京都區域</span>
+            <span><i class="legend-dot" style="background:#66BB6A;"></i>奈良＆生駒山</span>
+            <span><i class="legend-dot" style="background:#42A5F5;"></i>天橋立區域</span>
+          </div>
+        </div>
+
+        <div id="kansai-map"></div>
+      </div>
+    </section>
+
+    <!-- 全站地點搜尋與地區篩選工具列 -->
+    <div class="search-filter-bar" id="directory-toolbar">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="global-search" class="search-input" placeholder="搜尋神社、景點、商店、美食餐廳名稱或地址..." oninput="applyDirectoryFilters()">
+      </div>
+      <div class="filter-tabs" id="area-filter-tabs">
+        <button class="filter-tab active" data-area="all" onclick="setDirectoryArea('all', this)">全部地區</button>
+        <button class="filter-tab" data-area="大阪" onclick="setDirectoryArea('大阪', this)">大阪</button>
+        <button class="filter-tab" data-area="京都" onclick="setDirectoryArea('京都', this)">京都</button>
+        <button class="filter-tab" data-area="奈良" onclick="setDirectoryArea('奈良', this)">奈良</button>
+        <button class="filter-tab" data-area="天橋立" onclick="setDirectoryArea('天橋立', this)">天橋立</button>
+      </div>
+    </div>
+
+    <!-- 5. 神社與寺廟 -->
+    <section id="shrines">
+      <div class="section-header">
+        <span class="section-badge">大阪・京都祈福巡禮</span>
+        <h2 class="section-title">⛩️ 神社與寺廟</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="places-grid" id="grid-shrine"></div>
+    </section>
+
+    <!-- 6. 景點 -->
+    <section id="spots">
+      <div class="section-header">
+        <span class="section-badge">大阪・奈良・京都・天橋立</span>
+        <h2 class="section-title">🎡 景點</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="places-grid" id="grid-spot"></div>
+    </section>
+
+    <!-- 7. 逛街購物 -->
+    <section id="shopping">
+      <div class="section-header">
+        <span class="section-badge">大阪熱門商圈與市場</span>
+        <h2 class="section-title">🛍️ 逛街購物</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="places-grid" id="grid-shopping"></div>
+    </section>
+
+    <!-- 8. 商店 -->
+    <section id="stores">
+      <div class="section-header">
+        <span class="section-badge">必逛角色與潮流店鋪</span>
+        <h2 class="section-title">🧸 商店</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="places-grid" id="grid-store"></div>
+    </section>
+
+    <!-- 9. 美食餐廳 -->
+    <section id="food">
+      <div class="section-header">
+        <span class="section-badge">精選 17 間必吃清單</span>
+        <h2 class="section-title">🍜 美食餐廳</h2>
+        <div class="section-divider"></div>
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:18px;">
+        <button class="filter-tab active" onclick="setFoodFilter('all', this)">全部餐廳 (17)</button>
+        <button class="filter-tab" onclick="setFoodFilter('reserve', this)">📌 需訂位餐廳</button>
+        <button class="filter-tab" onclick="setFoodFilter('cafe', this)">☕ 咖啡／甜點</button>
+        <button class="filter-tab" onclick="setFoodFilter('ramen', this)">🍜 拉麵／小吃</button>
+        <button class="filter-tab" onclick="setFoodFilter('nabe', this)">🍲 壽喜燒／鍋物／燒肉</button>
+      </div>
+      <div class="places-grid" id="grid-food"></div>
+    </section>
+
+    <!-- 10. 出國必備清單 & Visit Japan Web -->
+    <section id="checklist">
+      <div class="section-header">
+        <span class="section-badge">自動儲存勾選進度</span>
+        <h2 class="section-title">🧳 出國必備清單</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="checklist-progress-box">
+        <div class="progress-header">
+          <span>🎒 行李與行前準備完成度</span>
+          <span id="checklist-percent">0% (0/38)</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="checklist-bar"></div>
+        </div>
+      </div>
+
+      <div class="checklist-grid" id="checklist-container"></div>
+
+      <!-- Visit Japan Web 入境提醒 -->
+      <div class="card" style="margin-top:24px; border-color:var(--pink-accent);">
+        <h3 style="font-size:1.2rem; color:var(--coffee-dark); margin-bottom:6px;">🛂 Visit Japan Web 入境提醒</h3>
+        <p style="font-size:0.9rem; color:var(--coffee-light);">出發前完成線上登錄，抵達關西機場更順暢：</p>
+        <div class="vjw-steps">
+          <div class="vjw-step">
+            <div class="vjw-num">1</div>
+            <div>建議出發前完成 Visit Japan Web 登錄，並確認入境及海關申報資料。</div>
+          </div>
+          <div class="vjw-step">
+            <div class="vjw-num">2</div>
+            <div>抵達日本後依照指示前往入境審查。</div>
+          </div>
+          <div class="vjw-step">
+            <div class="vjw-num">3</div>
+            <div>依照現場指示完成指紋及臉部辨識等程序。</div>
+          </div>
+          <div class="vjw-step">
+            <div class="vjw-num">4</div>
+            <div>依照現場規定出示護照及 QR Code。</div>
+          </div>
+          <div class="vjw-step">
+            <div class="vjw-num">5</div>
+            <div>領取行李。</div>
+          </div>
+          <div class="vjw-step">
+            <div class="vjw-num">6</div>
+            <div>前往海關申報。</div>
+          </div>
+        </div>
+        <p style="margin-top:14px; font-size:0.88rem; color:#C2185B; font-weight:700;">
+          💡 提醒：實際流程依日本機場現場指示為準。
+        </p>
+      </div>
+    </section>
+
+    <!-- 11. 實用 APP -->
+    <section id="apps">
+      <div class="section-header">
+        <span class="section-badge">日本自由行神隊友</span>
+        <h2 class="section-title">📱 實用 APP</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="app-grid">
+        <div class="app-card">
+          <div class="app-title">🚃 換乘案內（中文版）</div>
+          <p style="font-size:0.92rem;">日本交通路線查詢 App，可查詢電車、地鐵、JR 路線、轉乘方式、時間及票價。</p>
+        </div>
+        <div class="app-card">
+          <div class="app-title">📸 Kuli Kuli</div>
+          <p style="font-size:0.92rem;">AI 菜單及文字翻譯 App，可拍攝菜單、告示及日文文字翻譯成中文。</p>
+        </div>
+        <div class="app-card">
+          <div class="app-title">🗣️ VoiceTra</div>
+          <p style="font-size:0.92rem;">即時語音翻譯 App，支援中文、日文等語言，可輸入文字或語音翻譯。</p>
+        </div>
+        <div class="app-card">
+          <div class="app-title">☀️ tenki.jp</div>
+          <p style="font-size:0.92rem;">日本天氣預報 App，可查看即時天氣、逐時預報、降雨機率、氣溫及未來天氣。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. 交通資訊 -->
+    <section id="transport">
+      <div class="section-header">
+        <span class="section-badge">關西移動指南</span>
+        <h2 class="section-title">🚃 交通資訊</h2>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3 style="font-size:1.15rem; color:var(--coffee-dark); margin-bottom:12px;">🚆 主要交通方式</h3>
+          <ul class="hotel-list" style="grid-template-columns:1fr;">
+            <li>🚄 <strong>日本鐵路</strong>（私鐵如南海電鐵、阪急、京阪、近鐵等）</li>
+            <li>🚇 <strong>地鐵</strong>（大阪 Metro 各線、京都市營地下鐵）</li>
+            <li>🚆 <strong>JR</strong>（JR 西日本關空快速、京都線、奈良線等）</li>
+            <li>🚕 <strong>Uber</strong>（市區短程或多人分攤省時方便）</li>
+            <li>🚐 <strong>一日包車／跟團</strong>（如天橋立＋伊根舟屋一日遊）</li>
+          </ul>
+        </div>
+
+        <div class="card" style="background:linear-gradient(135deg, #FFFFFF 0%, #FDF2F5 100%);">
+          <h3 style="font-size:1.15rem; color:var(--coffee-dark); margin-bottom:12px;">💳 Suica 西瓜卡</h3>
+          <p style="font-size:0.95rem; margin-bottom:12px;">
+            類似台灣悠遊卡，可用於搭乘大眾運輸及部分小額支付（超商、自動販賣機、置物櫃等）。
+          </p>
+          <div style="background:var(--milk-tea-light); padding:12px 14px; border-radius:var(--radius-sm); font-size:0.9rem; font-weight:600;">
+            ✨ <strong>使用方式：</strong>可購買實體卡，或直接加入 iPhone / Apple Watch 手機錢包感應使用與儲值。
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    🌸 🇯🇵 榮來去日本 🇯🇵 ｜ 2027.02.27 — 2027.03.05 關西自由行專屬旅遊手冊 🌸
+  </footer>
+
+  <!-- Leaflet & MarkerCluster JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+  <script>
+    // ==========================================
+    // 完整地點資料庫 (住宿 + 神社寺廟 + 景點 + 逛街購物 + 商店 + 17間餐廳)
+    // ==========================================
+    const PLACES_DATA = [
+      // 住宿
+      {
+        id: "hotel-yebisu",
+        name: "STAY IN YEBISU（住宿基地）",
+        category: "hotel",
+        catLabel: "🏨 住宿",
+        area: "大阪",
+        address: "〒556-0003 大阪府大阪市浪速区恵美須西２丁目１１−6",
+        lat: 34.6531,
+        lng: 135.5034,
+        note: "入住 17:00-24:00 / 退房 11:00 前"
+      },
+
+      // 七、神社與寺廟 (9)
+      {
+        id: "shrine-1",
+        name: "大鳥大社",
+        category: "shrine",
+        catLabel: "⛩️ 神社與寺廟",
+        area: "大阪",
+        address: "日本大阪府堺市西區鳳北町1-1-2",
+        lat: 34.5369,
+        lng: 135.4608
+      },
+      {
+        id: "shrine-2",
+        name: "難波八阪神社",
+        category: "shrine",
+        catLabel: "⛩️ 神社與寺廟",
+        area: "大阪",
+        address: "日本大阪府大阪市浪速區元町2丁目9-19",
+        lat: 34.6612,
+        lng: 135.4966
+      },
+      {
+        id: "shrine-3",
+        name: "勝尾寺",
+        category: "shrine",
+        catLabel: "⛩️ 神社與寺廟",
+        area: "大阪",
+        address: "大阪府箕面市粟生間谷2914-1",
+        lat: 34.8658,
+        lng: 135.4911
+      },
+      {
+        id: "shrine-4",
+        name: "伏見稻荷大社",
+        category: "shrine",
+        catLabel: "⛩️ 神社與寺廟",
+        area: "京都",
+        address: "日本京都府京都市伏見區深草藪之內町68番地",
+        lat: 34.9671,
+        lng: 135.7727
+      },
+      {
+        id: "shrine-5",
+        name: "御金神社",
+        category: "shrine",
+        catLabel: "⛩️ 神社與寺廟",
+        area: "京都",
+        address: "京都府京都市中京区押西洞院町614",
+        lat: 35.0114,
+        lng: 135.7547
+      },
+      {
+        id: "shrine-6",
+        name: "檀王法林寺",
+        category: "shrine",
+        catLabel: "⛩️ 神社與寺廟",
+        area: "京都",
+        address: "京都府京都市左京區川端通3條上法林寺門前町36",
+        lat: 35.0096,
+        lng: 135.7723
+      },
+      {
+        id: "shrine-7",
+        name: "下鴨神社",
+        category: "shrine",
+        catLabel: "⛩️ 神社與寺廟",
+        area: "京都",
+        address: "京都市左京區下鴨泉川町59番地",
+        lat: 35.0391,
+        lng: 135.7730
+      },
+      {
+        id: "shrine-8",
+        name: "清水寺",
+        category: "shrine",
+        catLabel: "⛩️ 神社與寺廟",
+        area: "京都",
+        address: "〒605-0862 京都府京都市東山区清水１丁目294",
+        lat: 34.9949,
+        lng: 135.7850
+      },
+      {
+        id: "shrine-9",
+        name: "八坂神社",
+        category: "shrine",
+        catLabel: "⛩️ 神社與寺廟",
+        area: "京都",
+        address: "〒605-0073 京都府京都市東山区祇園町北側625",
+        lat: 35.0037,
+        lng: 135.7785
+      },
+
+      // 八、景點 (9)
+      {
+        id: "spot-1",
+        name: "大阪城公園、天守閣",
+        category: "spot",
+        catLabel: "🎡 景點",
+        area: "大阪",
+        address: "大阪府大阪市中央區大阪城1-1",
+        lat: 34.6873,
+        lng: 135.5262
+      },
+      {
+        id: "spot-2",
+        name: "通天閣",
+        category: "spot",
+        catLabel: "🎡 景點",
+        area: "大阪",
+        address: "日本大阪府大阪市浪速區惠美須東1丁目18番6號",
+        lat: 34.6525,
+        lng: 135.5063
+      },
+      {
+        id: "spot-3",
+        name: "Harukas300 展望台",
+        category: "spot",
+        catLabel: "🎡 景點",
+        area: "大阪",
+        address: "〒545-6016 大阪府大阪市阿倍野区阿倍野筋１丁目１−43",
+        lat: 34.6458,
+        lng: 135.5133
+      },
+      {
+        id: "spot-4",
+        name: "梅田藍天大樓",
+        category: "spot",
+        catLabel: "🎡 景點",
+        area: "大阪",
+        address: "〒531-6023 大阪府大阪市北区大淀中１丁目１−88",
+        lat: 34.7059,
+        lng: 135.4897
+      },
+      {
+        id: "spot-5",
+        name: "生駒山上遊樂園",
+        category: "spot",
+        catLabel: "🎡 景點",
+        area: "奈良",
+        address: "〒630-0231 奈良県生駒市菜畑町2312-1",
+        lat: 34.6788,
+        lng: 135.6791
+      },
+      {
+        id: "spot-6",
+        name: "奈良公園",
+        category: "spot",
+        catLabel: "🎡 景點",
+        area: "奈良",
+        address: "〒630-8501 奈良市登大路町30",
+        lat: 34.6851,
+        lng: 135.8430
+      },
+      {
+        id: "spot-7",
+        name: "京都塔",
+        category: "spot",
+        catLabel: "🎡 景點",
+        area: "京都",
+        address: "〒600-8216 京都府京都市下京区烏丸通七条下る東塩小路町721-1",
+        lat: 34.9875,
+        lng: 135.7593
+      },
+      {
+        id: "spot-8",
+        name: "天橋立（建議跟團一日遊）",
+        category: "spot",
+        catLabel: "🎡 景點",
+        area: "天橋立",
+        address: "〒626-0001 京都府宮津市文珠",
+        lat: 35.5686,
+        lng: 135.1886,
+        note: "建議跟團一日遊"
+      },
+      {
+        id: "spot-9",
+        name: "花見小路",
+        category: "spot",
+        catLabel: "🎡 景點",
+        area: "京都",
+        address: "〒605-0074 京都府京都市東山区祇園町南側569",
+        lat: 35.0022,
+        lng: 135.7751
+      },
+
+      // 九、逛街購物 (7)
+      {
+        id: "shop-1",
+        name: "心齋橋站／心齋橋筋商店街",
+        category: "shopping",
+        catLabel: "🛍️ 逛街購物",
+        area: "大阪",
+        address: "3 Chome-5 Minamisenba, Chuo Ward, Osaka, 542-0081 日本",
+        lat: 34.6751,
+        lng: 135.5011
+      },
+      {
+        id: "shop-2",
+        name: "道頓堀固力果跑人",
+        category: "shopping",
+        catLabel: "🛍️ 逛街購物",
+        area: "大阪",
+        address: "〒542-0071 大阪府大阪市中央区道頓堀１丁目１０−3",
+        lat: 34.6687,
+        lng: 135.5013
+      },
+      {
+        id: "shop-3",
+        name: "木津市場",
+        category: "shopping",
+        catLabel: "🛍️ 逛街購物",
+        area: "大阪",
+        address: "大阪府大阪市浪速區敷津東2丁目2-8",
+        lat: 34.6562,
+        lng: 135.4998
+      },
+      {
+        id: "shop-4",
+        name: "大阪梅田站",
+        category: "shopping",
+        catLabel: "🛍️ 逛街購物",
+        area: "大阪",
+        address: "〒530-0012 大阪府大阪市北区芝田１丁目１",
+        lat: 34.7055,
+        lng: 135.4983
+      },
+      {
+        id: "shop-5",
+        name: "美國街",
+        category: "shopping",
+        catLabel: "🛍️ 逛街購物",
+        area: "大阪",
+        address: "〒542-0086 大阪府大阪市中央区西心斎橋２丁目１１",
+        lat: 34.6718,
+        lng: 135.4984
+      },
+      {
+        id: "shop-6",
+        name: "橘子街",
+        category: "shopping",
+        catLabel: "🛍️ 逛街購物",
+        area: "大阪",
+        address: "〒550-0015 大阪府大阪市西区南堀江９",
+        lat: 34.6714,
+        lng: 135.4932
+      },
+      {
+        id: "shop-7",
+        name: "友都八喜",
+        category: "shopping",
+        catLabel: "🛍️ 逛街購物",
+        area: "大阪",
+        address: "〒530-0011 大阪府大阪市北区大深町１−1",
+        lat: 34.7043,
+        lng: 135.4963
+      },
+
+      // 十、商店 (5)
+      {
+        id: "store-1",
+        name: "蒙奇奇京都清水店",
+        category: "store",
+        catLabel: "🧸 商店",
+        area: "京都",
+        address: "〒605-0862 京都府京都市東山区清水２丁目218-1",
+        lat: 34.9964,
+        lng: 135.7813
+      },
+      {
+        id: "store-2",
+        name: "Kiddyland 大阪梅田店",
+        category: "store",
+        catLabel: "🧸 商店",
+        area: "大阪",
+        address: "〒530-0012 大阪府大阪市北区芝田１丁目１−3 阪急三番街北館 B1F-1F",
+        lat: 34.7062,
+        lng: 135.4980
+      },
+      {
+        id: "store-3",
+        name: "HISEKI 大阪心斎橋店（硬幣戒指）",
+        category: "store",
+        catLabel: "🧸 商店",
+        area: "大阪",
+        address: "日本〒542-0086 Osaka, Chuo Ward, Nishishinsaibashi, 2 Chome−10−24 プレビュービル 地下1階CD号",
+        lat: 34.6715,
+        lng: 135.4991,
+        note: "硬幣戒指體驗"
+      },
+      {
+        id: "store-4",
+        name: "BAPE STORE® 大阪",
+        category: "store",
+        catLabel: "🧸 商店",
+        area: "大阪",
+        address: "〒550-0015 大阪府大阪市西区南堀江１丁目１９−2",
+        lat: 34.6717,
+        lng: 135.4945
+      },
+      {
+        id: "store-5",
+        name: "BAPE STORE® 京都",
+        category: "store",
+        catLabel: "🧸 商店",
+        area: "京都",
+        address: "〒600-8004 京都府京都市下京区奈良物町374",
+        lat: 35.0034,
+        lng: 135.7681
+      },
+
+      // 十一、美食餐廳 (17間 - 已合併 Green 自然とお肉 green)
+      {
+        id: "food-1",
+        name: "牛丸 心齋橋",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "燒肉／肉料理",
+        foodGroup: "nabe",
+        area: "大阪",
+        address: "日本542-0083 Osaka, Chuo Ward，Higashishinsaibashi, 2 Chome-8-26 FUKU BLD.心斎橋 2F B号",
+        hours: "17:00-00:00",
+        reserve: false,
+        lat: 34.6716,
+        lng: 135.5037
+      },
+      {
+        id: "food-2",
+        name: "雞湯拉麵 座銀",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "雞白湯拉麵",
+        foodGroup: "ramen",
+        area: "大阪",
+        address: "〒542-0081 大阪府大阪市中央区南船場３丁目9−6",
+        hours: "10:00-22:00",
+        reserve: false,
+        lat: 34.6766,
+        lng: 135.5015
+      },
+      {
+        id: "food-3",
+        name: "MORITAY 梅田",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "壽喜燒",
+        foodGroup: "nabe",
+        area: "大阪",
+        address: "〒530-0001 大阪府大阪市北区梅田３丁目１−3 ルクアイーレ １０階 ルクアダイニング",
+        hours: "11:00-23:00",
+        reserve: false,
+        lat: 34.7031,
+        lng: 135.4953
+      },
+      {
+        id: "food-4",
+        name: "Ramen Hayashida Dotonbori store らぁ麺はやし田道頓堀店",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "拉麵",
+        foodGroup: "ramen",
+        area: "大阪",
+        address: "〒542-0071 大阪府大阪市中央区道頓堀１丁目１０−1 道頓堀観光ビル 地下１階",
+        hours: "11:00-23:00",
+        reserve: false,
+        lat: 34.6688,
+        lng: 135.5016
+      },
+      {
+        id: "food-5",
+        name: "カヌレと、天王寺店",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "可麗露甜點",
+        foodGroup: "cafe",
+        area: "大阪",
+        address: "10-16 Horikoshicho, Tennoji Ward, Osaka, 543-0056 日本",
+        hours: "10:00-19:00",
+        reserve: false,
+        lat: 34.6487,
+        lng: 135.5136
+      },
+      {
+        id: "food-6",
+        name: "Kinmugi Namba – Chicken Paitan Ramen & Tsukemen",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "雞白湯拉麵／沾麵",
+        foodGroup: "ramen",
+        area: "大阪",
+        address: "〒556-0011 大阪府大阪市浪速区難波中２丁目８−91 中川ビル 1F",
+        hours: "11:00-15:00 / 17:30-22:00",
+        reserve: false,
+        lat: 34.6619,
+        lng: 135.5019
+      },
+      {
+        id: "food-7",
+        name: "Hanadako はなだこ",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "章魚燒",
+        foodGroup: "ramen",
+        area: "大阪",
+        address: "〒530-0017 大阪府大阪市北区角田町９−26 大阪新梅田食道街 １階",
+        hours: "10:00-21:45",
+        reserve: false,
+        lat: 34.7037,
+        lng: 135.4989
+      },
+      {
+        id: "food-8",
+        name: "Green 自然とお肉 green",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "親子丼",
+        foodGroup: "ramen",
+        area: "大阪",
+        address: "〒550-0013 大阪府大阪市西区新町１丁目２４−14 1F西側",
+        hours: "11:30-14:00 / 17:00-23:00",
+        reserve: true,
+        lat: 34.6772,
+        lng: 135.4952
+      },
+      {
+        id: "food-9",
+        name: "Blue Entrance Kitchen 大阪心斎橋店",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "墨西哥卷餅",
+        foodGroup: "ramen",
+        area: "大阪",
+        address: "〒542-0086 大阪府大阪市中央区西心斎橋２丁目６−7 S-FRONT道頓堀ビル 4階",
+        hours: "11:00-15:00 / 17:00-21:00",
+        reserve: false,
+        lat: 34.6703,
+        lng: 135.4998
+      },
+      {
+        id: "food-10",
+        name: "LiLo Coffee Roasters",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "咖啡廳（有小卡）",
+        foodGroup: "cafe",
+        area: "大阪",
+        address: "〒542-0086 大阪府大阪市中央区西心斎橋１丁目１０−28 １階",
+        hours: "11:00-23:00",
+        reserve: false,
+        note: "有咖啡小卡",
+        lat: 34.6733,
+        lng: 135.4989
+      },
+      {
+        id: "food-11",
+        name: "Barista Map Coffee Roasters",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "咖啡廳",
+        foodGroup: "cafe",
+        area: "大阪",
+        address: "2 Chome-18-12 Nishishinsaibashi, Chuo Ward, Osaka, 542-0086 日本",
+        hours: "11:00-18:00（週一休息）",
+        reserve: false,
+        lat: 34.6701,
+        lng: 135.4979
+      },
+      {
+        id: "food-12",
+        name: "京都和牛壽喜燒涮涮鍋 富之上 祇園八坂店",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "和牛壽喜燒涮涮鍋",
+        foodGroup: "nabe",
+        area: "京都",
+        address: "〒605-0074 京都府京都市東山区四条通大和大路東入祇園町南側501番地2",
+        hours: "11:00-22:00",
+        reserve: true,
+        lat: 35.0035,
+        lng: 135.7745
+      },
+      {
+        id: "food-13",
+        name: "Melt Chocolate",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "熱巧克力專門店",
+        foodGroup: "cafe",
+        area: "大阪",
+        address: "〒542-0081 大阪府大阪市中央区南船場４丁目７−22 船場ＮＳビル 1階",
+        hours: "11:30-20:00",
+        reserve: false,
+        lat: 34.6761,
+        lng: 135.4994
+      },
+      {
+        id: "food-14",
+        name: "大阪 蟹銀 難波店",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "螃蟹料理",
+        foodGroup: "nabe",
+        area: "大阪",
+        address: "〒542-0076 大阪府大阪市中央区難波３丁目４−16 ECS第32ビル 7F-B",
+        hours: "12:00-23:00",
+        reserve: true,
+        lat: 34.6661,
+        lng: 135.5018
+      },
+      {
+        id: "food-15",
+        name: "Nikoniko Nabe Dotonbori 和和鍋 道頓堀店",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "鍋物料理",
+        foodGroup: "nabe",
+        area: "大阪",
+        address: "〒542-0071 大阪府大阪市中央区道頓堀１丁目６−15 コムラード・ドウトンビル 8F",
+        hours: "12:00-23:30",
+        reserve: true,
+        lat: 34.6686,
+        lng: 135.5030
+      },
+      {
+        id: "food-17",
+        name: "Shabu-Shabu, Sukiyaki, Crab All-You-Can-Eat Wagyu Beef, Pork, and Crab Shinsaibashi Station Front Store",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "和牛涮涮鍋／壽喜燒／螃蟹吃到飽",
+        foodGroup: "nabe",
+        area: "大阪",
+        address: "〒542-0085 大阪府大阪市中央区心斎橋筋１丁目３−13 茶茶心斎橋ビル 6F",
+        hours: "11:30-15:00、16:00-00:30",
+        reserve: true,
+        lat: 34.6744,
+        lng: 135.5015
+      },
+      {
+        id: "food-18",
+        name: "HUMAN MADE 1928 Cafe by Blue Bottle Coffee",
+        category: "food",
+        catLabel: "🍜 美食餐廳",
+        foodType: "藍瓶聯名咖啡廳",
+        foodGroup: "cafe",
+        area: "京都",
+        address: "〒604-8082 京都府京都市中京区弁慶石町56",
+        hours: "09:00-19:00",
+        reserve: false,
+        lat: 35.0085,
+        lng: 135.7676
+      }
+    ];
+
+    // ==========================================
+    // 出國必備清單資料
+    // ==========================================
+    const CHECKLIST_DATA = [
+      {
+        title: "🛂 證件與重要物品",
+        items: ["護照", "身分證", "台灣健保卡", "機票與訂房資料", "Visit Japan Web QR Code", "信用卡", "日幣現金", "緊急聯絡資訊"]
+      },
+      {
+        title: "🔌 電子用品",
+        items: ["手機", "手機充電器", "行動電源", "轉接插頭", "耳機", "相機及記憶卡", "網路 SIM 卡或 eSIM"]
+      },
+      {
+        title: "🧴 日常用品",
+        items: ["牙刷、牙膏", "保養品、化妝品", "個人藥品", "口罩", "衛生用品", "衣物、內衣褲", "睡衣", "襪子", "外套", "舒適好走的鞋子", "雨傘", "購物袋", "行李秤"]
+      },
+      {
+        title: "📋 行前準備",
+        items: ["完成 Visit Japan Web", "確認機票與住宿", "確認交通方式", "準備 Suica 西瓜卡", "下載換乘案內", "下載 Kuli Kuli", "下載 VoiceTra", "下載 tenki.jp", "確認旅遊保險", "確認手機漫遊或網路方案"]
+      }
+    ];
+
+    // ==========================================
+    // 1. 初始化 Kitty 風格關西旅遊地圖 (Leaflet)
+    // ==========================================
+    let map;
+    let markerClusterGroup;
+    const markersById = {};
+    let activeMapCategory = "all";
+
+    const CAT_ICONS = {
+      hotel: "🏨",
+      shrine: "⛩️",
+      spot: "🎡",
+      shopping: "🛍️",
+      store: "🧸",
+      food: "🍜"
+    };
+
+    function getGoogleMapsUrl(place) {
+      const q = encodeURIComponent(place.name + " " + place.address);
+      return `https://www.google.com/maps/search/?api=1&query=${q}`;
+    }
+
+    function initKittyMap() {
+      map = L.map("kansai-map", {
+        center: [34.85, 135.58],
+        zoom: 9,
+        scrollWheelZoom: false
+      });
+
+      // 使用完全免費、不需 API Key 的 OpenStreetMap 標準圖磚
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map);
+
+      // 區域圓形色塊標示（大阪、京都、奈良、天橋立真實地理位置）
+      const regions = [
+        { name: "大阪區域", lat: 34.675, lng: 135.502, radius: 14000, color: "#FF85B3" },
+        { name: "京都區域", lat: 35.005, lng: 135.770, radius: 11000, color: "#BA68C8" },
+        { name: "奈良＆生駒山區域", lat: 34.682, lng: 135.760, radius: 12000, color: "#66BB6A" },
+        { name: "天橋立區域", lat: 35.568, lng: 135.188, radius: 9000, color: "#42A5F5" }
+      ];
+
+      regions.forEach(r => {
+        L.circle([r.lat, r.lng], {
+          color: r.color,
+          fillColor: r.color,
+          fillOpacity: 0.12,
+          weight: 2,
+          dashArray: "6, 6",
+          radius: r.radius
+        }).addTo(map).bindTooltip(`🎀 ${r.name}`, { direction: "top" });
+      });
+
+      markerClusterGroup = L.markerClusterGroup({
+        maxClusterRadius: 34,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false
+      });
+
+      renderMapMarkers("all");
+      map.addLayer(markerClusterGroup);
+    }
+
+    function renderMapMarkers(catFilter) {
+      markerClusterGroup.clearLayers();
+      PLACES_DATA.forEach(place => {
+        if (catFilter !== "all" && place.category !== catFilter) return;
+
+        const iconHtml = `<div class="kitty-pin cat-${place.category}">${CAT_ICONS[place.category] || "📍"}</div>`;
+        const customIcon = L.divIcon({
+          html: iconHtml,
+          className: "",
+          iconSize: [34, 34],
+          iconAnchor: [17, 17],
+          popupAnchor: [0, -16]
+        });
+
+        const popupHtml = `
+          <div class="kitty-popup">
+            <div class="kitty-popup-badges">
+              <span class="kitty-popup-tag">🎀 ${place.area}</span>
+              <span class="kitty-popup-tag">${place.catLabel}</span>
+            </div>
+            <div class="kitty-popup-title">${place.name}</div>
+            <div class="kitty-popup-addr">📍 ${place.address}</div>
+            ${place.hours ? `<div class="kitty-popup-addr">⏰ ${place.hours}</div>` : ""}
+            <a class="kitty-popup-btn" href="${getGoogleMapsUrl(place)}" target="_blank" rel="noopener">開啟 Google Maps 導航 ➔</a>
+          </div>
+        `;
+
+        const marker = L.marker([place.lat, place.lng], { icon: customIcon }).bindPopup(popupHtml);
+        markersById[place.id] = marker;
+        markerClusterGroup.addLayer(marker);
+      });
+    }
+
+    function setMapView(viewKey, btn) {
+      document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const views = {
+        all: { center: [35.02, 135.52], zoom: 8 },
+        osaka: { center: [34.675, 135.502], zoom: 13 },
+        kyoto: { center: [35.005, 135.770], zoom: 13 },
+        nara: { center: [34.682, 135.765], zoom: 12 },
+        amanohashidate: { center: [35.568, 135.188], zoom: 13 }
+      };
+      const target = views[viewKey] || views.all;
+      map.flyTo(target.center, target.zoom, { duration: 0.7 });
+    }
+
+    function filterMapCategory(cat, btn) {
+      activeMapCategory = cat;
+      document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderMapMarkers(cat);
+    }
+
+    function focusOnPlace(placeId) {
+      const place = PLACES_DATA.find(p => p.id === placeId);
+      if (!place) return;
+
+      // 確保地圖目前顯示所有分類以便找到標記
+      if (activeMapCategory !== "all") {
+        const allBtn = document.querySelector('[data-cat="all"]');
+        filterMapCategory("all", allBtn);
+      }
+
+      document.getElementById("kitty-map-section").scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => {
+        const marker = markersById[placeId];
+        if (marker) {
+          markerClusterGroup.zoomToShowLayer(marker, () => {
+            marker.openPopup();
+          });
+        } else {
+          map.flyTo([place.lat, place.lng], 15);
+        }
+      }, 450);
+    }
+
+    // ==========================================
+    // 2. 渲染景點、神社、購物、商店、餐廳卡片
+    // ==========================================
+    let currentDirArea = "all";
+    let currentFoodGroup = "all";
+
+    function createPlaceCardHtml(p) {
+      const reserveBadge = p.reserve ? `<span class="badge-reserve">📌 需訂位</span>` : "";
+      const noteBadge = p.note ? `<span class="badge-note">✨ ${p.note}</span>` : "";
+      const typeBadge = p.foodType ? `<span class="badge-type">🍽️ ${p.foodType}</span>` : `<span class="badge-type">${p.catLabel}</span>`;
+      const hoursRow = p.hours ? `<div class="place-detail"><span>⏰</span><span>${p.hours}</span></div>` : "";
+
+      return `
+        <article class="place-card" data-area="${p.area}" data-foodgroup="${p.foodGroup || ''}" data-reserve="${p.reserve ? 'true' : 'false'}" data-search="${(p.name + ' ' + p.address + ' ' + (p.foodType || '') + ' ' + p.area).toLowerCase()}">
+          <div>
+            <div class="place-badges">
+              <span class="badge-area">📍 ${p.area}</span>
+              ${typeBadge}
+              ${reserveBadge}
+              ${noteBadge}
+            </div>
+            <h3 class="place-name">${p.name}</h3>
+            <div class="place-detail"><span>🏠</span><span>${p.address}</span></div>
+            ${hoursRow}
+          </div>
+          <div class="place-actions">
+            <a class="btn-map-link" href="${getGoogleMapsUrl(p)}" target="_blank" rel="noopener">🗺️ Google Maps</a>
+            <button class="btn-focus-map" onclick="focusOnPlace('${p.id}')">🎀 地圖定位</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderAllDirectoryCards() {
+      const cats = ["shrine", "spot", "shopping", "store", "food"];
+      cats.forEach(cat => {
+        const container = document.getElementById(`grid-${cat}`);
+        if (!container) return;
+        const list = PLACES_DATA.filter(p => p.category === cat);
+        container.innerHTML = list.map(createPlaceCardHtml).join("");
+      });
+    }
+
+    function setDirectoryArea(area, btn) {
+      currentDirArea = area;
+      document.querySelectorAll('#area-filter-tabs .filter-tab').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      applyDirectoryFilters();
+    }
+
+    function setFoodFilter(group, btn) {
+      currentFoodGroup = group;
+      btn.parentElement.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyDirectoryFilters();
+    }
+
+    function applyDirectoryFilters() {
+      const keyword = document.getElementById("global-search").value.trim().toLowerCase();
+      document.querySelectorAll(".place-card").forEach(card => {
+        const cardArea = card.getAttribute("data-area");
+        const cardSearch = card.getAttribute("data-search");
+        const isFood = card.parentElement && card.parentElement.id === "grid-food";
+
+        let matchArea = (currentDirArea === "all" || cardArea === currentDirArea);
+        let matchKeyword = (!keyword || cardSearch.includes(keyword));
+        let matchFood = true;
+
+        if (isFood && currentFoodGroup !== "all") {
+          if (currentFoodGroup === "reserve") {
+            matchFood = card.getAttribute("data-reserve") === "true";
+          } else {
+            matchFood = card.getAttribute("data-foodgroup") === currentFoodGroup;
+          }
+        }
+
+        if (matchArea && matchKeyword && matchFood) {
+          card.classList.remove("hidden");
+        } else {
+          card.classList.add("hidden");
+        }
+      });
+    }
+
+    // ==========================================
+    // 3. 出國必備清單 (可勾選 + LocalStorage + 完成百分比)
+    // ==========================================
+    const STORAGE_KEY = "eilai_japan_2027_checklist_v1";
+
+    function loadChecklistState() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveChecklistState(state) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    function renderChecklist() {
+      const state = loadChecklistState();
+      const container = document.getElementById("checklist-container");
+      let idx = 0;
+
+      container.innerHTML = CHECKLIST_DATA.map(cat => {
+        const itemsHtml = cat.items.map(item => {
+          const key = `item_${idx++}`;
+          const checked = !!state[key];
+          return `
+            <label class="check-item ${checked ? 'checked' : ''}" data-key="${key}">
+              <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleCheckItem('${key}', this)">
+              <span>${item}</span>
+            </label>
+          `;
+        }).join("");
+
+        return `
+          <div class="checklist-cat">
+            <h3>${cat.title}</h3>
+            ${itemsHtml}
+          </div>
+        `;
+      }).join("");
+
+      updateChecklistProgress();
+    }
+
+    function toggleCheckItem(key, checkbox) {
+      const state = loadChecklistState();
+      state[key] = checkbox.checked;
+      saveChecklistState(state);
+
+      const label = checkbox.closest(".check-item");
+      if (checkbox.checked) {
+        label.classList.add("checked");
+      } else {
+        label.classList.remove("checked");
+      }
+      updateChecklistProgress();
+    }
+
+    function updateChecklistProgress() {
+      const allBoxes = document.querySelectorAll('#checklist-container input[type="checkbox"]');
+      const total = allBoxes.length;
+      const done = Array.from(allBoxes).filter(cb => cb.checked).length;
+      const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+      document.getElementById("checklist-percent").textContent = `${pct}% (${done}/${total})`;
+      document.getElementById("checklist-bar").style.width = `${pct}%`;
+    }
+
+    // 啟動初始化
+    document.addEventListener("DOMContentLoaded", () => {
+      renderAllDirectoryCards();
+      renderChecklist();
+      initKittyMap();
+    });
+  </script>
+</body>
+</html>
